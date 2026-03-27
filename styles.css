@@ -1,0 +1,681 @@
+/* ========================================== */
+/* RESET Y VARIABLES GLOBALES                 */
+/* ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Paleta de colores */
+    --bg-paper: #f0ebd8;
+    --grid-line: #dcd7c6;
+    --window-bg: #fdfaf1;
+    --header-bg: #617056;
+    --text-dark: #333333;
+    --text-orange: #d97736;
+    --text-light: #f4f4f4;
+    --text-title: #8b927e;
+
+    /* Colores para la barra y redes */
+    --taskbar-bg: #617056;
+    --linkedin-bg: #0a66c2;
+    --github-bg: #24292e;
+    --facebook-bg: #1877F2;
+    --instagram-bg: #E4405F;
+    
+    /* Sombras y bordes */
+    --border-dark: #2c2c2c;
+    --shadow-window: 4px 4px 0px rgba(0, 0, 0, 0.8);
+    --shadow-icon: 2px 2px 0px rgba(0, 0, 0, 0.8);
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--text-dark);
+    background-color: var(--bg-paper);
+    background-image: 
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ========================================== */
+/* ESTILOS MÓVILES (MOBILE FIRST)             */
+/* ========================================== */
+
+/* --- Escritorio y Programas --- */
+.desktop {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 180px; 
+    column-gap: 20px;
+    padding: 30px;
+    align-content: center; 
+    height: calc(100vh - 70px); 
+}
+
+.desktop-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.desktop-icon:active {
+    transform: scale(0.95);
+}
+
+.icon-img {
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--border-dark);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    box-shadow: var(--shadow-icon);
+    margin-bottom: 8px;
+    background-color: #fce8a1;
+}
+
+.h-icon {
+    background-color: #5c674b;
+    color: var(--text-light);
+}
+
+.icon-label {
+    font-size: 14px;
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.background-title {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 0;
+    pointer-events: none;
+    color: var(--text-title);
+    font-family: 'VT323', monospace;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.title-top {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: 4px;
+}
+
+.title-bottom {
+    font-size: 3.5rem;
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: 2px;
+}
+
+/* --- Ventana Modal --- */
+.window-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Oculto por defecto */
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+/* Clase para activar la ventana */
+.window-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.window {
+    background-color: var(--window-bg);
+    border: 2px solid var(--border-dark);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: var(--shadow-window);
+    overflow: hidden;
+    /* Estado inicial para la animación */
+    transform: scale(0.8);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.window-overlay.active .window {
+    transform: scale(1); /* Expande al abrir */
+}
+
+.window-header {
+    background-color: var(--header-bg);
+    color: var(--text-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--border-dark);
+}
+
+.window-title {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.window-close {
+    background-color: #e57373;
+    color: white;
+    border: 2px solid var(--border-dark);
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.window-close:active {
+    background-color: #d32f2f;
+}
+
+/* --- Contenido de la Ventana (Móvil: 1 Columna) --- */
+.window-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.profile-photo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-dark);
+}
+
+.profile-desc .greeting {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.profile-desc .name {
+    color: var(--text-orange);
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.profile-desc .role {
+    font-size: 12px;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.profile-desc .bio {
+    font-family: sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.profile-desc .quote {
+    font-style: italic;
+    font-size: 12px;
+    color: #555;
+}
+
+/* ========================================== */
+/* VENTANA DE PROYECTOS (MOBILE FIRST)        */
+/* ========================================== */
+.window-large {
+    max-width: 900px;
+}
+
+.projects-scroll {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--header-bg) var(--bg-paper);
+}
+
+.projects-scroll::-webkit-scrollbar {
+    width: 12px;
+}
+
+.projects-scroll::-webkit-scrollbar-track {
+    background: var(--bg-paper);
+    border-left: 2px solid var(--border-dark);
+}
+
+.projects-scroll::-webkit-scrollbar-thumb {
+    background-color: var(--header-bg);
+    border: 2px solid var(--border-dark);
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    width: 100%;
+}
+
+.project-card {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-dark);
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.project-title {
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+    color: var(--text-orange);
+    border-bottom: 2px dashed #ccc;
+    padding-bottom: 5px;
+}
+
+.project-desc {
+    font-size: 14px;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tech-tag {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border: 1px solid var(--border-dark);
+    border-radius: 4px;
+    color: var(--text-dark);
+}
+
+.html { background-color: rgba(227, 79, 38, 0.2); border-color: var(--tag-html); }
+.css { background-color: rgba(21, 114, 182, 0.2); border-color: var(--tag-css); }
+.js { background-color: rgba(247, 223, 30, 0.3); border-color: #d4b800; }
+.cs { background-color: rgba(35, 145, 32, 0.2); border-color: var(--tag-cs); }
+
+.project-link {
+    display: inline-block;
+    background-color: var(--header-bg);
+    color: var(--text-light);
+    text-decoration: none;
+    text-align: center;
+    padding: 8px 12px;
+    border: 2px solid var(--border-dark);
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+    transition: transform 0.1s, box-shadow 0.1s;
+    margin-top: 5px;
+}
+
+.project-link:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px rgba(0,0,0,1);
+}
+
+/* ========================================== */
+/* VENTANA DE CONTACTO (MOBILE FIRST)         */
+/* ========================================== */
+.contact-content {
+    padding: 30px;
+}
+
+.contact-title {
+    font-family: 'VT323', monospace;
+    font-size: 32px;
+    color: var(--text-orange);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.contact-info {
+    width: 100%;
+    background-color: #eee9d8;
+    border: 2px inset var(--border-dark);
+    padding: 15px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.contact-info p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.contact-info p:last-child {
+    margin-bottom: 0;
+}
+
+.contact-socials {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 2px solid var(--border-dark);
+    border-radius: 8px;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.2s ease;
+}
+
+.facebook {
+    background-color: var(--facebook-bg);
+}
+
+.instagram {
+    background-color: var(--instagram-bg);
+}
+
+.social-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 1);
+}
+
+/* ========================================== */
+/* VENTANA DE RESUMEN (HABILIDADES Y CV)      */
+/* ========================================== */
+.resume-content {
+    padding: 25px;
+    align-items: flex-start; /* Alinea el contenido a la izquierda en móvil */
+    text-align: left;
+}
+
+.resume-subtitle {
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+    color: var(--text-orange);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+    width: 100%;
+}
+
+/* --- Barras de Habilidades --- */
+.skills-section {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.skill-item {
+    margin-bottom: 15px;
+}
+
+.skill-info {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.skill-bar-container {
+    width: 100%;
+    height: 20px;
+    background-color: #eee9d8;
+    border: 2px solid var(--border-dark);
+    box-shadow: inset 2px 2px 0px rgba(0,0,0,0.2); 
+    overflow: hidden;
+    position: relative;
+}
+
+.skill-bar-fill {
+    height: 100%;
+    background-color: var(--header-bg);
+    border-right: 2px solid var(--border-dark);
+    transition: width 1s ease-in-out; 
+}
+
+.js-bar { background-color: #d4b800; }
+.uxi-bar { background-color: #555; }
+
+.download-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.download-text {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    font-family: sans-serif;
+}
+
+.download-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background-color: #333; /* Botón oscuro */
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 2px solid var(--border-dark);
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.download-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
+}
+
+
+/* ========================================== */
+/* BARRA DE TAREAS (MOBILE FIRST)             */
+/* ========================================== */
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--taskbar-bg);
+    border-top: 2px solid var(--border-dark);
+    padding: 12px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+.taskbar-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.task-icon {
+    width: 45px;
+    height: 45px;
+    border: 2px solid var(--border-dark);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-light);
+    box-shadow: var(--shadow-icon);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.task-icon:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.linkedin {
+    background-color: var(--linkedin-bg);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.github {
+    background-color: var(--github-bg);
+}
+
+.desktop {
+    padding-bottom: 80px; 
+}
+
+/* ========================================== */
+/* ESTILOS DE ESCRITORIO (MEDIA QUERIES)      */
+/* ========================================== */
+@media (min-width: 768px) {
+    .background-title
+    {
+        top: 50%;
+    }
+    
+    .title-top {
+        font-size: 4rem;
+    }
+
+    .title-bottom {
+        font-size: 8rem;
+        letter-spacing: 5px;
+    }
+
+    .desktop {
+        grid-template-columns: repeat(4, 100px);
+        justify-content: space-around;
+        align-content: start;
+        padding-top: 50px;
+        row-gap: 20px;
+    }
+
+    .window-content {
+        flex-direction: row;
+        text-align: left;
+        padding: 40px;
+        gap: 30px;
+    }
+
+    .profile-photo img {
+        width: 160px;
+        height: 160px;
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .project-link:hover {
+        background-color: #4a5742;
+    }
+
+    /* ========================================== */
+    /* MEDIA QUERIES ESCRITORIO (CONTACTO)        */
+    /* ========================================== */
+
+    .contact-content
+    {
+        flex-direction: column;
+    }
+
+    .contact-socials {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .social-btn {
+        width: 200px;
+    }
+
+    .social-btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.8);
+        filter: brightness(0.85);
+    }
+
+    .resume-content {
+        padding: 40px;
+    }
+
+    .download-btn:hover {
+        background-color: #555;
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.8);
+    }
+
+    /* --- Barra de tareas Escritorio --- */
+    .taskbar {
+        padding: 15px 0;
+    }
+
+    .taskbar-icons {
+        gap: 25px;
+    }
+
+    .task-icon {
+        width: 55px;
+        height: 55px;
+    }
+
+    .linkedin {
+        font-size: 28px;
+    }
+
+    .github svg {
+        width: 35px;
+        height: 35px;
+    }
+
+    .task-icon:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
+    }
+}
