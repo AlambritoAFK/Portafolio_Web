@@ -689,3 +689,75 @@ body {
         box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
     }
 }
+/* ===== Página: Mis trabajos en Photoshop (phoshop.html) ===== */
+.photoshop-page {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fff;
+    color: #111;
+}
+
+.photoshop-page .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 20px 48px;
+}
+
+.photoshop-page h1 {
+    margin: 0 0 12px;
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    font-weight: 700;
+    text-align: center;
+}
+
+.photoshop-page .title-line {
+    width: 100%;
+    height: 1px;
+    background: #000;
+    margin: 0 auto 24px;
+}
+
+.photoshop-page .gallery {
+    columns: 1;
+    column-gap: 16px;
+}
+
+.photoshop-page .gallery-item {
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 16px;
+    break-inside: avoid;
+}
+
+.photoshop-page .gallery-item a {
+    display: block;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.photoshop-page .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.35s ease;
+}
+
+.photoshop-page .gallery-item img:hover {
+    transform: scale(1.08);
+}
+
+@media (min-width: 600px) {
+    .photoshop-page .gallery {
+        columns: 2;
+    }
+}
+
+@media (min-width: 900px) {
+    .photoshop-page .gallery {
+        columns: 3;
+    }
+}
